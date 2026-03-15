@@ -14,8 +14,8 @@ function App() {
 
   return (
     <section className={styles.container}>
-      {/* {!selectedGame ? <Home onSelectGame={handleGameSelect} /> : <Game />} */}
-      <Game />
+      {!selectedGame ? <Home onSelectGame={handleGameSelect} /> : <Game />}
+      {/* <Game /> */}
     </section>
   );
 }
