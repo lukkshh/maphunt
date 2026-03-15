@@ -2,12 +2,21 @@ import { create } from "zustand";
 
 interface GameState {
   score: number;
-  setScore: (score: number) => void;
+  totalScore: number;
+  distance: string;
   addScore: (score: number) => void;
+  setDistance: (distance: string) => void;
 }
 
 export const useGameStore = create<GameState>((set) => ({
   score: 0,
-  setScore: (score) => set({ score }),
-  addScore: (score) => set((state) => ({ score: state.score + score })),
+  totalScore: 0,
+  distance: "0",
+  setDistance: (distance) => set({ distance }),
+
+  addScore: (score) =>
+    set((state) => ({
+      score: score,
+      totalScore: state.totalScore + score,
+    })),
 }));

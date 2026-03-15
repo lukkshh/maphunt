@@ -17,7 +17,7 @@ const MARKER_RADIUS = 10;
 export default function Map() {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapImageRef = useRef<HTMLImageElement>(null);
-  const { addScore } = useGameStore();
+  const { addScore, setDistance } = useGameStore();
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!mapRef.current || !mapImageRef.current) {
@@ -74,6 +74,8 @@ export default function Map() {
     mapRef.current.appendChild(marker);
 
     const distancePx = calculateDistance(guessPoint, targetPoint);
+
+    setDistance(distancePx.toFixed(0));
 
     const score = calculateScore(distancePx);
     addScore(score);
