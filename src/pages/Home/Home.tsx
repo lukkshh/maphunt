@@ -3,6 +3,8 @@ import Button from "@/components/Button/Button";
 import styles from "./Home.module.scss";
 import Card from "@/components/Card/Card";
 import Badge from "@/components/Badge/Badge";
+import Popup from "@/components/Popup/Popup";
+import { useState } from "react";
 
 type HomeProps = {
   onSelectGame: (gameId: string) => void;
@@ -26,8 +28,49 @@ const GAME_OPTIONS = [
 ] as const;
 
 export default function Home({ onSelectGame }: HomeProps) {
+  const [popUpOpen, setPopUpOpen] = useState(false);
+  const [selectedGame, setSelectedGame] = useState<string | null>(null);
+
+  const handleClick = (game: string) => {
+    setPopUpOpen(true);
+    setSelectedGame(game);
+  };
+
+  const handleDifficultySelect = (difficulty: string, gameId: string) => {
+    setPopUpOpen(false);
+    onSelectGame(`${gameId}-${difficulty}`);
+  };
+
   return (
     <main className={styles.page}>
+      {popUpOpen && (
+        <Popup className={styles.difficultyPopup}>
+          <p className={styles.cardText}>Choose difficulty</p>
+          <div className={styles.cardButtonGroup}>
+            <Button
+              onClick={() => handleDifficultySelect("easy", selectedGame!)}
+              variant="primary"
+              className={styles.cardButton}
+            >
+              Easy
+            </Button>
+            <Button
+              onClick={() => handleDifficultySelect("medium", selectedGame!)}
+              variant="primary"
+              className={styles.cardButton}
+            >
+              Medium
+            </Button>
+            <Button
+              onClick={() => handleDifficultySelect("hard", selectedGame!)}
+              variant="primary"
+              className={styles.cardButton}
+            >
+              Hard
+            </Button>
+          </div>
+        </Popup>
+      )}
       <header className={styles.header}>
         <p className={styles.eyebrow}>MapHunt</p>
         <h1>Pick game </h1>
@@ -52,7 +95,7 @@ export default function Home({ onSelectGame }: HomeProps) {
               <Button
                 variant="primary"
                 disabled={!available}
-                onClick={() => onSelectGame(game.id)}
+                onClick={() => handleClick(game.id)}
                 className={styles.cardButton}
               >
                 {available ? "Play now" : "Coming soon"}

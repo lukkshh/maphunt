@@ -8,9 +8,13 @@ import styles from "./App.module.scss";
 function App() {
   const [selectedGame, setSelectedGame] = useState<string | null>(null);
 
+  const handleGameSelect = (data: string) => {
+    setSelectedGame(data);
+  };
+
   return (
     <section className={styles.container}>
-      {!selectedGame ? <Home onSelectGame={setSelectedGame} /> : <Game />}
+      {!selectedGame ? <Home onSelectGame={handleGameSelect} /> : <Game />}
     </section>
   );
 }

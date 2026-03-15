@@ -17,7 +17,11 @@ export default function Game() {
   }, []);
 
   return (
-    <div className={styles.game}>
+    <div className={styles.container}>
+      <header>
+        <h1>dkdkdkd</h1>
+      </header>
+
       {!countDownOver && <img src="/places/123.jpg" />}
 
       {countDownOver && (

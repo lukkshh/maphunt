@@ -15,17 +15,16 @@ export default function Map() {
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const coords = getRelativeCoordinates(e.nativeEvent, e.currentTarget);
     console.log(coords);
-    const marker = createMarker(coords, "red");
+    let marker = createMarker(coords, "red");
     if (mapRef.current) {
       mapRef.current.appendChild(marker);
     }
 
-    setTimeout(() => {
-      const marker = createMarker({ x: 0.519, y: 0.747 }, "lime");
-      if (mapRef.current) {
-        mapRef.current.appendChild(marker);
-      }
-    }, 500);
+    marker = createMarker({ x: 0.519, y: 0.747 }, "lime");
+    if (mapRef.current) {
+      mapRef.current.appendChild(marker);
+    }
+
     const mapWidth = mapRef.current!.clientWidth;
     const mapHeight = mapRef.current!.clientHeight;
 
@@ -34,10 +33,11 @@ export default function Map() {
       { x: 0.519 * mapWidth, y: 0.747 * mapHeight },
     );
 
-    console.log("Distance (px):", distancePx.toFixed(2), "px");
+    // console.log("Distance (px):", distancePx.toFixed(2), "px");
     const score = calculateScore(distancePx);
-    console.log("Score:", score);
+    // console.log("Score:", score);
     addScore(score);
+
     if (mapRef.current) {
       const line = createLine(
         coords.x * mapWidth,
