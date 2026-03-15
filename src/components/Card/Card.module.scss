@@ -1,0 +1,19 @@
+.card {
+  padding: 1.1rem;
+  border-radius: 0.9rem;
+  border: 1px solid var(--border-subtle);
+  background: linear-gradient(
+    180deg,
+    var(--bg-surface-elevated) 0%,
+    var(--bg-surface) 100%
+  );
+  box-shadow: var(--shadow-soft);
+}
+
+.available {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border-subtle));
+}
+
+.locked {
+  opacity: 0.82;
+}
