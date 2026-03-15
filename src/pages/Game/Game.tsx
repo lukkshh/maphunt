@@ -1,28 +1,37 @@
-import Map from "@/components/Map/Map";
+"use client";
+
+import Image from "next/image";
+
+import Map from "@/components/atoms/Map/Map";
 import styles from "./Game.module.scss";
 import { useEffect, useState } from "react";
 import { useGameStore } from "@/store/gameStore";
+import Link from "next/link";
 
-const TIMER = 0.5;
+interface GameProps {
+  TIMER?: number;
+}
 
-export default function Game() {
+export default function Game({ TIMER = 0.5 }: GameProps) {
   const [countDownOver, setCountDownOver] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
+
   const { totalScore, score, distance } = useGameStore();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setCountDownOver(true);
-    }, TIMER * 1000);
+    if (imageLoaded) {
+      const timer = setTimeout(() => {
+        setCountDownOver(true);
+      }, TIMER * 1000);
 
-    return () => clearTimeout(timer);
-  }, []);
+      return () => clearTimeout(timer);
+    }
+  }, [imageLoaded, TIMER]);
 
   return (
     <div className={styles.container}>
       <header>
-        <a href="/">Home</a>
+        <Link href="/">Home</Link>
         <p>
           Total Score: <span>{totalScore}</span>
         </p>
@@ -30,20 +39,19 @@ export default function Game() {
 
       <section className={styles.gameArea}>
         {!countDownOver && (
-          <img
-            className={styles.mapImage}
-            src="/places/123.jpg"
-            alt="Place"
-            onLoad={() => setImageLoaded(true)}
-            onError={() => setImageError(true)}
-            style={{ display: imageLoaded ? "block" : "none" }}
-          />
+          <div className={styles.imageWrapper}>
+            <Image
+              className={styles.mapImage}
+              src="/places/123.jpg"
+              alt="Place"
+              fill
+              sizes="(max-width: 800px) 100vw, 800px"
+              onLoad={() => setImageLoaded(true)}
+              style={{ opacity: imageLoaded ? 1 : 0 }}
+              priority
+            />
+          </div>
         )}
-
-        {!imageLoaded && !imageError && !countDownOver && (
-          <p>Loading image...</p>
-        )}
-        {imageError && <p>Failed to load image.</p>}
 
         {countDownOver && distance !== "0" && (
           <div className={styles.results}>

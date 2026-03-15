@@ -1,14 +1,13 @@
-import Button from "@/components/Button/Button";
-
-import styles from "./Home.module.scss";
-import Card from "@/components/Card/Card";
-import Badge from "@/components/Badge/Badge";
-import Popup from "@/components/Popup/Popup";
+"use client";
 import { useState } from "react";
 
-type HomeProps = {
-  onSelectGame: (gameId: string) => void;
-};
+import Button from "@/components/atoms/Button/Button";
+import Card from "@/components/atoms/Card/Card";
+import Badge from "@/components/atoms/Badge/Badge";
+import Popup from "@/components/atoms/Popup/Popup";
+
+import styles from "./HomeSection.module.scss";
+import { useRouter } from "next/navigation";
 
 const GAME_OPTIONS = [
   {
@@ -29,7 +28,8 @@ const GAME_OPTIONS = [
   },
 ] as const;
 
-export default function Home({ onSelectGame }: HomeProps) {
+export default function HomeSection() {
+  const router = useRouter();
   const [popUpOpen, setPopUpOpen] = useState(false);
   const [selectedGame, setSelectedGame] = useState<string | null>(null);
 
@@ -40,7 +40,7 @@ export default function Home({ onSelectGame }: HomeProps) {
 
   const handleDifficultySelect = (difficulty: string, gameId: string) => {
     setPopUpOpen(false);
-    onSelectGame(`${gameId}-${difficulty}`);
+    router.push(`/game/${gameId}-${difficulty}`);
   };
 
   return (

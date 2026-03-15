@@ -64,11 +64,15 @@
         color: var(--accent);
       }
     }
-  }
 
-  .mapImage {
-    width: min(100vw, 800px);
-    aspect-ratio: 1 / 1;
-    object-fit: contain;
+    .imageWrapper {
+      position: relative;
+      width: min(100vw, 800px);
+      aspect-ratio: 1 / 1;
+    }
+
+    .mapImage {
+      object-fit: contain;
+    }
   }
 }
