@@ -1,0 +1,22 @@
+.container {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  border: 1px solid black;
+
+  cursor: url("/images/crosshair.svg"), auto;
+
+  .mapImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+:global(.marker) {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+
+  border-radius: 50%;
+}

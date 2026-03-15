@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <!-- Horizontal left -->
+  <rect x="0" y="15.5" width="12" height="1.5" fill="#00FF00"/>
+  <!-- Horizontal right -->
+  <rect x="20" y="15.5" width="12" height="1.5" fill="#00FF00"/>
+  <!-- Vertical top -->
+  <rect x="15.5" y="0" width="1.5" height="12" fill="#00FF00"/>
+  <!-- Vertical bottom -->
+  <rect x="15.5" y="20" width="1.5" height="12" fill="#00FF00"/>
+</svg>
