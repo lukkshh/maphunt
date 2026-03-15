@@ -11,9 +11,7 @@ export default function Popup({
   return (
     <div className={styles.container} {...props}>
       <div className={`${styles.cardWrapper} `}>
-        <Card className={`${className}`} available={true}>
-          {children}
-        </Card>
+        <Card className={`${className}`}>{children}</Card>
       </div>
     </div>
   );

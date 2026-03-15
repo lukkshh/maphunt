@@ -1,58 +1,100 @@
 import { useRef } from "react";
 import styles from "./Map.module.scss";
 
-import { getRelativeCoordinates } from "@/utils/coordinates";
+import {
+  getContainedImageBox,
+  getRelativeCoordinates,
+} from "@/utils/coordinates";
 import { createMarker } from "@/utils/marker";
 import { calculateDistance } from "@/utils/distance";
 import { calculateScore } from "@/utils/score";
 import { createLine } from "@/utils/line";
 import { useGameStore } from "@/store/gameStore";
 
+const TARGET = { x: 0.519, y: 0.747 };
+const MARKER_RADIUS = 10;
+
 export default function Map() {
   const mapRef = useRef<HTMLDivElement>(null);
+  const mapImageRef = useRef<HTMLImageElement>(null);
   const { addScore } = useGameStore();
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const coords = getRelativeCoordinates(e.nativeEvent, e.currentTarget);
-    console.log(coords);
-    let marker = createMarker(coords, "red");
-    if (mapRef.current) {
-      mapRef.current.appendChild(marker);
+    if (!mapRef.current || !mapImageRef.current) {
+      return;
     }
 
-    marker = createMarker({ x: 0.519, y: 0.747 }, "lime");
-    if (mapRef.current) {
-      mapRef.current.appendChild(marker);
+    const mapRect = mapRef.current.getBoundingClientRect();
+    const imageRect = mapImageRef.current.getBoundingClientRect();
+    const imageBox = getContainedImageBox(mapImageRef.current);
+
+    const renderedBounds = {
+      left: imageRect.left + imageBox.left,
+      top: imageRect.top + imageBox.top,
+      width: imageBox.width,
+      height: imageBox.height,
+    };
+
+    if (!renderedBounds.width || !renderedBounds.height) {
+      return;
     }
 
-    const mapWidth = mapRef.current!.clientWidth;
-    const mapHeight = mapRef.current!.clientHeight;
+    const clickX = e.clientX;
+    const clickY = e.clientY;
+    const outsideImage =
+      clickX < renderedBounds.left ||
+      clickX > renderedBounds.left + renderedBounds.width ||
+      clickY < renderedBounds.top ||
+      clickY > renderedBounds.top + renderedBounds.height;
 
-    const distancePx = calculateDistance(
-      { x: coords.x * mapWidth, y: coords.y * mapHeight },
-      { x: 0.519 * mapWidth, y: 0.747 * mapHeight },
+    if (outsideImage) {
+      return;
+    }
+
+    const coords = getRelativeCoordinates(
+      e.nativeEvent,
+      e.currentTarget,
+      renderedBounds,
     );
 
-    // console.log("Distance (px):", distancePx.toFixed(2), "px");
+    const guessPoint = {
+      x: renderedBounds.left - mapRect.left + coords.x * renderedBounds.width,
+      y: renderedBounds.top - mapRect.top + coords.y * renderedBounds.height,
+    };
+
+    const targetPoint = {
+      x: renderedBounds.left - mapRect.left + TARGET.x * renderedBounds.width,
+      y: renderedBounds.top - mapRect.top + TARGET.y * renderedBounds.height,
+    };
+
+    let marker = createMarker(guessPoint, "red");
+    mapRef.current.appendChild(marker);
+
+    marker = createMarker(targetPoint, "lime");
+    mapRef.current.appendChild(marker);
+
+    const distancePx = calculateDistance(guessPoint, targetPoint);
+
     const score = calculateScore(distancePx);
-    // console.log("Score:", score);
     addScore(score);
 
-    if (mapRef.current) {
-      const line = createLine(
-        coords.x * mapWidth,
-        coords.y * mapHeight,
-        0.519 * mapWidth,
-        0.747 * mapHeight,
-        "lime",
-      );
-      mapRef.current.appendChild(line);
-    }
+    const line = createLine(
+      guessPoint.x,
+      guessPoint.y,
+      targetPoint.x,
+      targetPoint.y,
+      {
+        color: "lime",
+        trim: MARKER_RADIUS,
+      },
+    );
+    mapRef.current.appendChild(line);
   };
 
   return (
     <div ref={mapRef} onClick={handleClick} className={styles.container}>
       <img
+        ref={mapImageRef}
         className={styles.mapImage}
         src="/maps/cs2_mirage_map.webp"
         alt="Map"

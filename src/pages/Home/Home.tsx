@@ -14,6 +14,7 @@ const GAME_OPTIONS = [
   {
     id: "cs2",
     title: "CS2",
+    img: "/images/cs2.jpg",
     description:
       "test your tactical skills, explore bomb sites, and find the key locations before the round ends!",
     status: "available",
@@ -22,6 +23,7 @@ const GAME_OPTIONS = [
   {
     id: "more",
     title: "More Games",
+    img: "/images/more_games.png",
     description: "Explore more exciting game modes!",
     status: "coming-soon",
   },
@@ -84,7 +86,13 @@ export default function Home({ onSelectGame }: HomeProps) {
           const available = game.status === "available";
 
           return (
-            <Card key={game.id} className={styles.card} available={available}>
+            <Card
+              key={game.id}
+              className={styles.card}
+              available={available}
+              coverImage={"img" in game ? game.img : undefined}
+              coverLabel={`${game.title} preview`}
+            >
               <div className={styles.cardTopRow}>
                 <h2>{game.title}</h2>
                 <Badge>{available ? "Ready" : "Soon"}</Badge>

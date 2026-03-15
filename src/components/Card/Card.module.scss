@@ -1,5 +1,6 @@
 .card {
-  padding: 1.1rem;
+  --card-cover-image: none;
+
   border-radius: 0.9rem;
   border: 1px solid var(--border-subtle);
   background: linear-gradient(
@@ -8,6 +9,51 @@
     var(--bg-surface) 100%
   );
   box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease;
+}
+
+.content {
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+}
+
+.withCover {
+  .content {
+    padding-top: 1rem;
+  }
+}
+
+.cover {
+  height: 10rem;
+  background-image:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--bg-surface-elevated) 20%, transparent) 0%,
+      color-mix(in srgb, var(--bg-base) 82%, transparent) 100%
+    ),
+    var(--card-cover-image);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--accent) 28%, var(--border-subtle));
+  transition: transform 220ms ease;
+}
+
+.available:hover {
+  transform: translateY(-2px);
+
+  .cover {
+    transform: scale(1.03);
+  }
 }
 
 .available {
