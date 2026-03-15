@@ -23,10 +23,16 @@ export default function Map() {
         mapRef.current.appendChild(marker);
       }
     }, 500);
+    const mapWidth = mapRef.current!.clientWidth;
+    const mapHeight = mapRef.current!.clientHeight;
 
-    const distance = calculateDistance(coords, { x: 0.519, y: 0.747 });
-    console.log("Distance:", distance);
-    const score = calculateScore(distance);
+    const distancePx = calculateDistance(
+      { x: coords.x * mapWidth, y: coords.y * mapHeight },
+      { x: 0.519 * mapWidth, y: 0.747 * mapHeight },
+    );
+
+    console.log("Distance (px):", distancePx.toFixed(2), "px");
+    const score = calculateScore(distancePx);
     console.log("Score:", score);
   };
 
