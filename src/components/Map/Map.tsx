@@ -6,9 +6,11 @@ import { createMarker } from "@/utils/marker";
 import { calculateDistance } from "@/utils/distance";
 import { calculateScore } from "@/utils/score";
 import { createLine } from "@/utils/line";
+import { useGameStore } from "@/store/gameStore";
 
 export default function Map() {
   const mapRef = useRef<HTMLDivElement>(null);
+  const { addScore } = useGameStore();
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const coords = getRelativeCoordinates(e.nativeEvent, e.currentTarget);
@@ -35,7 +37,7 @@ export default function Map() {
     console.log("Distance (px):", distancePx.toFixed(2), "px");
     const score = calculateScore(distancePx);
     console.log("Score:", score);
-
+    addScore(score);
     if (mapRef.current) {
       const line = createLine(
         coords.x * mapWidth,
