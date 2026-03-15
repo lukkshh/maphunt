@@ -1,4 +1,5 @@
-import Game from "@/pages/Game/Game";
+import GameSection from "@/components/organisms/GameSection/GameSection";
+import api from "@/lib/axios";
 
 import { GameDifficulty } from "@/types/game";
 
@@ -9,12 +10,17 @@ export default async function Page({
 }) {
   const { id } = await params;
 
-  //   const game = id.split("-").slice(0, -1).join("-");
+  const res = await api.get(`/game/${id}`);
+
+  console.log("Game data:", res.data);
+
   const difficulty = id.split("-").slice(-1)[0];
 
   return (
     <>
-      <Game TIMER={GameDifficulty[difficulty as keyof typeof GameDifficulty]} />
+      <GameSection
+        TIMER={GameDifficulty[difficulty as keyof typeof GameDifficulty]}
+      />
     </>
   );
 }

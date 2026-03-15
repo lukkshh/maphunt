@@ -2,9 +2,9 @@
 import { useState } from "react";
 
 import Button from "@/components/atoms/Button/Button";
-import Card from "@/components/atoms/Card/Card";
+import Card from "@/components/molecules/Card/Card";
 import Badge from "@/components/atoms/Badge/Badge";
-import Popup from "@/components/atoms/Popup/Popup";
+import Popup from "@/components/molecules/Popup/Popup";
 
 import styles from "./HomeSection.module.scss";
 import { useRouter } from "next/navigation";

@@ -1,18 +1,20 @@
 "use client";
 
-import Image from "next/image";
-
-import Map from "@/components/atoms/Map/Map";
-import styles from "./Game.module.scss";
-import { useEffect, useState } from "react";
 import { useGameStore } from "@/store/gameStore";
+import { useEffect, useState } from "react";
+
+import Image from "next/image";
 import Link from "next/link";
+
+import Map from "@/components/molecules/Map/Map";
+
+import styles from "./GameSection.module.scss";
 
 interface GameProps {
   TIMER?: number;
 }
 
-export default function Game({ TIMER = 0.5 }: GameProps) {
+export default function GameSection({ TIMER = 0.5 }: GameProps) {
   const [countDownOver, setCountDownOver] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
