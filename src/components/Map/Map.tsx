@@ -5,6 +5,7 @@ import { getRelativeCoordinates } from "@/utils/coordinates";
 import { createMarker } from "@/utils/marker";
 import { calculateDistance } from "@/utils/distance";
 import { calculateScore } from "@/utils/score";
+import { createLine } from "@/utils/line";
 
 export default function Map() {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -34,6 +35,17 @@ export default function Map() {
     console.log("Distance (px):", distancePx.toFixed(2), "px");
     const score = calculateScore(distancePx);
     console.log("Score:", score);
+
+    if (mapRef.current) {
+      const line = createLine(
+        coords.x * mapWidth,
+        coords.y * mapHeight,
+        0.519 * mapWidth,
+        0.747 * mapHeight,
+        "lime",
+      );
+      mapRef.current.appendChild(line);
+    }
   };
 
   return (

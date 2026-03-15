@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 const TIMER = 2; // seconds
 
 export default function Game() {
-  const [countDownOver, setCountDownOver] = useState(false);
+  const [countDownOver, setCountDownOver] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {
