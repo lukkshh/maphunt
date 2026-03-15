@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 const TIMER = 2; // seconds
 
 export default function Game() {
-  const [countDownOver, setCountDownOver] = useState(true);
+  const [countDownOver, setCountDownOver] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -16,7 +16,7 @@ export default function Game() {
 
   return (
     <div className={styles.game}>
-      {/* {!countDownOver && <img src="/places/123.jpg" />} */}
+      {!countDownOver && <img src="/places/123.jpg" />}
 
       {countDownOver && <Map />}
     </div>

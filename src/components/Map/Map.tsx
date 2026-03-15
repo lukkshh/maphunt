@@ -28,8 +28,6 @@ export default function Map() {
     console.log("Distance:", distance);
     const score = calculateScore(distance);
     console.log("Score:", score);
-
-    // alert(`score: ${score}`);
   };
 
   return (
