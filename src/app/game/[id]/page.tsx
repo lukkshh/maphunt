@@ -12,8 +12,6 @@ export default async function Page({
 
   const res = await api.get(`/game/${id}`);
 
-  console.log(res.data);
-
   const difficulty = id.split("-").slice(-1)[0];
 
   return (
