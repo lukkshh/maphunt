@@ -6,6 +6,7 @@ const steps = ["3", "2", "1", "GO!"];
 
 export default function Loader({ onDone }: { onDone?: () => void }) {
   const [index, setIndex] = useState(0);
+  const [done, setDone] = useState(false);
 
   useEffect(() => {
     if (index < steps.length - 1) {
@@ -17,7 +18,10 @@ export default function Loader({ onDone }: { onDone?: () => void }) {
   }, [index]);
 
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      style={{ display: done ? "none" : "flex" }}
+    >
       <AnimatePresence mode="wait">
         <motion.p
           key={steps[index]}
@@ -28,6 +32,7 @@ export default function Loader({ onDone }: { onDone?: () => void }) {
           onAnimationComplete={() => {
             if (index === steps.length - 1) {
               onDone?.();
+              setDone(true);
             }
           }}
         >
