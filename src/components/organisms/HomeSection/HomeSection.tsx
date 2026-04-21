@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 
 import Button from "@/components/atoms/Button/Button";
 import Card from "@/components/molecules/Card/Card";
@@ -7,7 +8,6 @@ import Badge from "@/components/atoms/Badge/Badge";
 import Popup from "@/components/molecules/Popup/Popup";
 
 import styles from "./HomeSection.module.scss";
-import { useRouter } from "next/navigation";
 
 const GAME_OPTIONS = [
   {
@@ -29,47 +29,41 @@ const GAME_OPTIONS = [
 ] as const;
 
 export default function HomeSection() {
-  const router = useRouter();
   const [popUpOpen, setPopUpOpen] = useState(false);
   const [selectedGame, setSelectedGame] = useState<string | null>(null);
 
   const handleClick = (game: string) => {
-    setPopUpOpen(true);
     setSelectedGame(game);
-  };
-
-  const handleDifficultySelect = (difficulty: string, gameId: string) => {
-    setPopUpOpen(false);
-    router.push(`/game/${gameId}-${difficulty}`);
+    setPopUpOpen(true);
   };
 
   return (
     <main className={styles.page}>
-      {popUpOpen && (
+      {popUpOpen && selectedGame && (
         <Popup className={styles.difficultyPopup}>
           <p className={styles.cardText}>Choose difficulty</p>
           <div className={styles.cardButtonGroup}>
-            <Button
-              onClick={() => handleDifficultySelect("easy", selectedGame!)}
-              variant="primary"
-              className={styles.cardButton}
+            <Link
+              href={`/game/${selectedGame}-easy`}
+              className={styles.difficultyLink}
+              onClick={() => setPopUpOpen(false)}
             >
               Easy
-            </Button>
-            <Button
-              onClick={() => handleDifficultySelect("medium", selectedGame!)}
-              variant="primary"
-              className={styles.cardButton}
+            </Link>
+            <Link
+              href={`/game/${selectedGame}-medium`}
+              className={styles.difficultyLink}
+              onClick={() => setPopUpOpen(false)}
             >
               Medium
-            </Button>
-            <Button
-              onClick={() => handleDifficultySelect("hard", selectedGame!)}
-              variant="primary"
-              className={styles.cardButton}
+            </Link>
+            <Link
+              href={`/game/${selectedGame}-hard`}
+              className={styles.difficultyLink}
+              onClick={() => setPopUpOpen(false)}
             >
               Hard
-            </Button>
+            </Link>
           </div>
         </Popup>
       )}
