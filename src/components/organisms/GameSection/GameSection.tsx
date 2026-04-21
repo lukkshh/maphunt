@@ -3,6 +3,8 @@
 import { useGameStore } from "@/store/gameStore";
 import { useEffect, useState } from "react";
 
+import Loader from "@/components/molecules/Loader/Loader";
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -17,21 +19,27 @@ interface GameProps {
 export default function GameSection({ TIMER = 0.5 }: GameProps) {
   const [countDownOver, setCountDownOver] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const { totalScore, score, distance } = useGameStore();
 
   useEffect(() => {
-    if (imageLoaded) {
+    if (imageLoaded && !loading) {
       const timer = setTimeout(() => {
         setCountDownOver(true);
       }, TIMER * 1000);
 
       return () => clearTimeout(timer);
     }
-  }, [imageLoaded, TIMER]);
+  }, [imageLoaded, TIMER, loading]);
 
   return (
     <div className={styles.container}>
+      <Loader
+        onDone={() => {
+          setLoading(false);
+        }}
+      />
       <header>
         <Link href="/">Home</Link>
         <p>
