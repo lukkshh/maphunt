@@ -21,8 +21,13 @@ export default function GameSection({ TIMER = 0.5, DATA }: GameProps) {
   const [countDownOver, setCountDownOver] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  const { totalScore, score, distance } = useGameStore();
+  const { totalScore, score, distance, setDistance } = useGameStore();
+
+  const totalSteps = DATA.data.length;
+
+  const [step, setStep] = useState(0);
 
   useEffect(() => {
     if (imageLoaded && !loading) {
@@ -33,6 +38,26 @@ export default function GameSection({ TIMER = 0.5, DATA }: GameProps) {
       return () => clearTimeout(timer);
     }
   }, [imageLoaded, TIMER, loading]);
+
+  const handleNext = () => {
+    if (isTransitioning) {
+      return;
+    }
+
+    if (step >= totalSteps - 1) {
+      return;
+    }
+
+    setIsTransitioning(true);
+
+    setTimeout(() => {
+      setStep((prev) => prev + 1);
+      setCountDownOver(false);
+      setImageLoaded(false);
+      setDistance("0");
+      setIsTransitioning(false);
+    }, 1000);
+  };
 
   return (
     <div className={styles.container}>
@@ -53,7 +78,7 @@ export default function GameSection({ TIMER = 0.5, DATA }: GameProps) {
           <div className={styles.imageWrapper}>
             <Image
               className={styles.mapImage}
-              src="/places/123.jpg"
+              src={DATA.data[step].placeSrc}
               alt="Place"
               fill
               sizes="(max-width: 800px) 100vw, 800px"
@@ -75,7 +100,14 @@ export default function GameSection({ TIMER = 0.5, DATA }: GameProps) {
           </div>
         )}
 
-        {countDownOver && <Map mapSrc={DATA.mapSrc} />}
+        {countDownOver && (
+          <Map
+            onHandleClick={handleNext}
+            mapSrc={DATA.mapSrc}
+            target={DATA.data[step].target}
+            disabled={isTransitioning}
+          />
+        )}
       </section>
     </div>
   );

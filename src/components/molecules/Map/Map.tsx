@@ -12,15 +12,30 @@ import { calculateScore } from "@/utils/score";
 import { createLine } from "@/utils/line";
 import { useGameStore } from "@/store/gameStore";
 
-const TARGET = { x: 0.519, y: 0.747 };
 const MARKER_RADIUS = 10;
 
-export default function Map({ mapSrc }: { mapSrc: string }) {
+interface MapProps {
+  mapSrc: string;
+  onHandleClick: () => void;
+  target: { x: number; y: number };
+  disabled?: boolean;
+}
+
+export default function Map({
+  mapSrc,
+  onHandleClick,
+  target,
+  disabled = false,
+}: MapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapImageRef = useRef<HTMLImageElement>(null);
   const { addScore, setDistance } = useGameStore();
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (disabled) {
+      return;
+    }
+
     if (!mapRef.current || !mapImageRef.current) {
       return;
     }
@@ -64,8 +79,8 @@ export default function Map({ mapSrc }: { mapSrc: string }) {
     };
 
     const targetPoint = {
-      x: renderedBounds.left - mapRect.left + TARGET.x * renderedBounds.width,
-      y: renderedBounds.top - mapRect.top + TARGET.y * renderedBounds.height,
+      x: renderedBounds.left - mapRect.left + target.x * renderedBounds.width,
+      y: renderedBounds.top - mapRect.top + target.y * renderedBounds.height,
     };
 
     let marker = createMarker(guessPoint, "red");
@@ -92,10 +107,17 @@ export default function Map({ mapSrc }: { mapSrc: string }) {
       },
     );
     mapRef.current.appendChild(line);
+
+    onHandleClick();
   };
 
   return (
-    <div ref={mapRef} onClick={handleClick} className={styles.container}>
+    <div
+      ref={mapRef}
+      onClick={handleClick}
+      className={styles.container}
+      style={{ pointerEvents: disabled ? "none" : "auto" }}
+    >
       <img
         ref={mapImageRef}
         className={styles.mapImage}

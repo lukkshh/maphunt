@@ -4,6 +4,8 @@ type Difficulty = (typeof DIFFICULTIES)[number];
 const GAMES = ["cs2"] as const;
 type Game = (typeof GAMES)[number];
 
+import { cs2Data } from "@/data/cs2.data";
+
 export async function GET(
   req: Request,
   { params }: { params: Promise<{ id: string }> },
@@ -56,6 +58,7 @@ export async function GET(
       game,
       difficulty,
       mapSrc: `/maps/cs2_mirage_map.webp`,
+      data: cs2Data,
     }),
     {
       status: 200,
