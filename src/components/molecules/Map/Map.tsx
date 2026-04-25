@@ -5,6 +5,7 @@ import {
   getContainedImageBox,
   getRelativeCoordinates,
 } from "@/utils/coordinates";
+
 import { createMarker } from "@/utils/marker";
 import { calculateDistance } from "@/utils/distance";
 import { calculateScore } from "@/utils/score";
@@ -14,7 +15,7 @@ import { useGameStore } from "@/store/gameStore";
 const TARGET = { x: 0.519, y: 0.747 };
 const MARKER_RADIUS = 10;
 
-export default function Map() {
+export default function Map({ mapSrc }: { mapSrc: string }) {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapImageRef = useRef<HTMLImageElement>(null);
   const { addScore, setDistance } = useGameStore();
@@ -98,7 +99,7 @@ export default function Map() {
       <img
         ref={mapImageRef}
         className={styles.mapImage}
-        src="/maps/cs2_mirage_map.webp"
+        src={mapSrc}
         alt="Map"
       />
     </div>

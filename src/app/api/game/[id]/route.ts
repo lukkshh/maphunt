@@ -50,10 +50,18 @@ export async function GET(
     );
   }
 
-  return new Response(JSON.stringify({ id, game, difficulty }), {
-    status: 200,
-    headers: {
-      "Content-Type": "application/json",
+  return new Response(
+    JSON.stringify({
+      id,
+      game,
+      difficulty,
+      mapSrc: `/maps/cs2_mirage_map.webp`,
+    }),
+    {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
     },
-  });
+  );
 }

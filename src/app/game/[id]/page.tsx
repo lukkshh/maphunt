@@ -11,8 +11,9 @@ export default async function Page({
   const { id } = await params;
 
   const res = await api.get(`/game/${id}`);
+  const data: GameData = await res.data;
 
-  console.log(res.data);
+  // console.log(res.data);
 
   const difficulty = id.split("-").slice(-1)[0];
 
@@ -20,6 +21,7 @@ export default async function Page({
     <>
       <GameSection
         TIMER={GameDifficulty[difficulty as keyof typeof GameDifficulty]}
+        DATA={data}
       />
     </>
   );

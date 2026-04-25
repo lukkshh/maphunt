@@ -14,9 +14,10 @@ import styles from "./GameSection.module.scss";
 
 interface GameProps {
   TIMER?: number;
+  DATA: GameData;
 }
 
-export default function GameSection({ TIMER = 0.5 }: GameProps) {
+export default function GameSection({ TIMER = 0.5, DATA }: GameProps) {
   const [countDownOver, setCountDownOver] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -74,7 +75,7 @@ export default function GameSection({ TIMER = 0.5 }: GameProps) {
           </div>
         )}
 
-        {countDownOver && <Map />}
+        {countDownOver && <Map mapSrc={DATA.mapSrc} />}
       </section>
     </div>
   );
